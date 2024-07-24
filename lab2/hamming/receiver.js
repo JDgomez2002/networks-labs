@@ -44,10 +44,10 @@ const hamming_7_4_decoder = (code) => {
 };
 
 function main() {
-  const message = "1001100";
+  const message = "100110010011000011110";
   // convert the message to an array of integers
   const code = message.split("").map((number) => parseInt(number));
-  if (code.length !== 7 || code.some((bit) => bit !== 0 && bit !== 1)) {
+  if (code.length % 7 !== 0 || code.some((bit) => bit !== 0 && bit !== 1)) {
     console.error("Invalid input. Make sure to enter exactly 7 bits (0 or 1).");
     return;
   }
@@ -55,7 +55,28 @@ function main() {
   console.log("\n-------------- Received message --------------");
   console.log(`${code.join("")}\n`);
 
-  const decodedMessage = hamming_7_4_decoder(code);
+  // separate bits in groups of 7 int length
+  const codes = [];
+  for (let i = 0; i < code.length; i += 7) {
+    codes.push(code.slice(i, i + 7));
+  }
+
+  console.log(`Number of groups: ${codes.length}`);
+  for (let i = 0; i < codes.length; i++) {
+    console.log(
+      `Group ${i + 1}: ${codes[i].join("")} length: ${codes[i].length}`
+    );
+  }
+
+  const decodedMessages = [];
+
+  // decode each group of 4 bits
+  for (let i = 0; i < codes.length; i++) {
+    decodedMessages.push(hamming_7_4_decoder(codes[i]));
+  }
+
+  // join the decoded messages
+  const decodedMessage = decodedMessages.join("");
 
   console.log("\n-------------- Decoded message --------------");
   console.log(`${decodedMessage}\n`);

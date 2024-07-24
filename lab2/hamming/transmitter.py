@@ -25,14 +25,31 @@ def encoder(bits):
     return [d1, d2, d3, p1, d4, p2, p3]
 
 def main():
-    print("\nType the transmitter message (4 bits)")
-    message = input(">> ")
+    # print("\nType the transmitter message (4 bits)")
+    message = "1001100111"
+
     bits = [int(bit) for bit in message]
 
-    encoded = encoder(bits)
+    # separate bits in groups of 4 length
+    bits_groups = [bits[i:i+4] for i in range(0, len(bits), 4)]
+
+    # if a bit group is less than 4 bits, add 0s to complete the group at the beginning
+    if len(bits_groups[-1]) < 4:
+        bits_groups[-1] = [0] * (4 - len(bits_groups[-1])) + bits_groups[-1]
+
+    message = ''.join([str(bit) for bits in bits_groups for bit in bits])
+
+    encodedBits = [];
+
+    # codificate each group of 4 bits
+    for bits in bits_groups:
+        encodedBits.append(encoder(bits))
+
+    # concatenate all the codificated bits into a new bits list
+    encoded = [bit for bits in encodedBits for bit in bits]
 
     print("------------------ Hamming algorithm ------------------")
-    print("Message:", bits)
+    print("Message:", message)
     print(f"Parity bit p1: {encoded[3]}")
     print(f"Parity bit p2: {encoded[5]}")
     print(f"Parity bit p3: {encoded[6]}")
@@ -40,6 +57,7 @@ def main():
     print(f"Codificated bits: ", end="")
     for bit in encoded:
         print(bit, end="")
+    print(f'\nlength: {len(encoded)}')
     print("\n--------------------------------------------------------")
 
 if __name__ == "__main__":

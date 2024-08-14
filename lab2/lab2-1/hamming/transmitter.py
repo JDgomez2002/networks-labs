@@ -25,7 +25,6 @@ def encoder(bits):
     return [d1, d2, d3, p1, d4, p2, p3]
 
 def main():
-    # print("\nType the transmitter message (4 bits)")
     message = "1001100111"
 
     bits = [int(bit) for bit in message]
@@ -41,12 +40,16 @@ def main():
 
     encodedBits = [];
 
+    print(f'bits_grops: {bits_groups}')
+
     # codificate each group of 4 bits
     for bits in bits_groups:
         encodedBits.append(encoder(bits))
 
     # concatenate all the codificated bits into a new bits list
     encoded = [bit for bits in encodedBits for bit in bits]
+
+    print(f'encoded: {encoded}')
 
     print("------------------ Hamming algorithm ------------------")
     print("Message:", message)

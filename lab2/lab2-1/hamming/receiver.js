@@ -36,7 +36,7 @@ const hamming_7_4_decoder = (code) => {
     // Correct the error
     code[error_pos - 1] = code[error_pos - 1] === 0 ? 1 : 0;
     console.log("The corrected code is: ", code.join(""));
-    return;
+    return `${code[0]}${code[1]}${code[2]}${code[4]}`;
   }
 
   // Display decoded data
@@ -44,7 +44,7 @@ const hamming_7_4_decoder = (code) => {
 };
 
 function main() {
-  const message = "100110010011000011110";
+  const message = "100110010011000011010";
   // convert the message to an array of integers
   const code = message.split("").map((number) => parseInt(number));
   if (code.length % 7 !== 0 || code.some((bit) => bit !== 0 && bit !== 1)) {
@@ -59,13 +59,6 @@ function main() {
   const codes = [];
   for (let i = 0; i < code.length; i += 7) {
     codes.push(code.slice(i, i + 7));
-  }
-
-  console.log(`Number of groups: ${codes.length}`);
-  for (let i = 0; i < codes.length; i++) {
-    console.log(
-      `Group ${i + 1}: ${codes[i].join("")} length: ${codes[i].length}`
-    );
   }
 
   const decodedMessages = [];
